@@ -30,5 +30,7 @@ dependencies {
     compile("org.webjars:bootstrap:3.3.7")
     compile("org.webjars:jquery:3.1.0")
 
+    compile group: 'org.webjars.bower', name: 'ng-stomp', version: '0.4.0'
+
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }

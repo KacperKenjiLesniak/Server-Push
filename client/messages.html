@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Client</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="../lib/ng-stomp.standalone.min.js"></script>
+    <script type="text/javascript">
+
+        var app = angular.module('messagesApp', ['ngStomp']);
+
+        app.controller('MessageController', function ($stomp, $scope) {
+
+            $scope.myres = [];
+
+            $stomp.connect('http://localhost:8080/gs-guide-websocket', {})
+                .then(function (frame) {
+                    var subscription = $stomp.subscribe('/topic/greetings',
+                        function (payload, headers, res) {
+                            alert("Dupa:" + payload);
+                            $scope.myres = payload;
+                            $scope.$apply($scope.myres);
+                        });
+
+                    $stomp.send('app/hello', '');
+                });
+        });
+
+    </script>
+    <style>
+        .liveScore{
+            color : blue;
+        }
+
+        li{
+            list-style: none;
+            padding:0px 0px 10px 0px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="liveScore" ng-app="messagesApp" ng-controller="MessageController">
+    <p>Messages {{myres.length}}:</p>
+    <ul>
+        <li ng-repeat="x in myres">{{$index+1}}: {{x.content}}</li>
+    </ul>
+</div>
+</body>
+</html>
