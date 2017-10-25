@@ -1,0 +1,13 @@
+Serwer:
+
+Konfiguracja:
+	Lista nazwanych parametrów podzielonych na typy (niezmienne liczby, zakres, wybór).
+	Liczba matchów, jeśli nie jest ona wybierana przez klienta.
+	Domyślne priorytety.
+
+Działanie serwera:
+	Serwer dostaje asynchronicznie zapytania składające się z dwóch elementów:
+		1. Dane o szukającym (parametry).
+		2. Dane o tym, czego szukający chce (parametry).
+	Serwer przetwarza zapytania i w momencie gdy stwierdzi, że match jest gotowy, usuwa połączoną grupę i przesyła ją dalej.
+	Serwer rozszerza poszukiwania odnośnie jednego klienta w czasie jego życia.
