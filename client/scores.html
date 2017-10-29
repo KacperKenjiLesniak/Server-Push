@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Client</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+    <script src="lib/ng-stomp.standalone.min.js"></script>
+    <script type="text/javascript">
+
+        var app = angular.module('kswaughsLiveScore', ['ngStomp']);
+
+        app.controller('LiveController', function ($stomp, $scope) {
+
+            $scope.myres = [];
+
+            $stomp.connect('http://localhost:8080/livescore-websocket', {})
+                .then(function (frame) {
+                    var subscription = $stomp.subscribe('/topic/myscores',
+                        function (payload, headers, res) {
+                            $scope.myres = payload;
+                            $scope.$apply($scope.myres);
+                        });
+
+                    $stomp.send('/app/score', '');
+                });
+        });
+
+    </script>
+    <style>
+        .liveScore{
+            color : blue;
+        }
+
+        li{
+            list-style: none;
+            padding:0px 0px 10px 0px;
+        }
+    </style>
+</head>
+<body >
+<div class="liveScore" ng-app="kswaughsLiveScore" ng-controller="LiveController">
+    <p>Cricket - Live Score</p>
+    <ul>
+        <li ng-repeat="x in myres">{{$index+1}} - {{x.name}} - <b>{{x.runs}}</b> runs (<b>{{x.balls}}</b>balls)</li>
+    </ul>
+</div>
+</body>
+</html>
