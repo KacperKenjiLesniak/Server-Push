@@ -8,17 +8,18 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
 @Configuration
 @EnableWebSocketMessageBroker
-public class LiveScoreSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
-
+public class LiveScoreSocketConfig extends AbstractWebSocketMessageBrokerConfigurer
+{
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
+    public void configureMessageBroker(MessageBrokerRegistry config)
+    {
         config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/livescore-websocket").setAllowedOrigins("*"). withSockJS();
+    public void registerStompEndpoints(StompEndpointRegistry registry)
+    {
+        registry.addEndpoint("/livescore-websocket").setAllowedOrigins("*").withSockJS();
     }
-
 }
