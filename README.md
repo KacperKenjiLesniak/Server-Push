@@ -1,5 +1,5 @@
 To run project follow these steps:
-* run server (can be done by running main form BootApp OR by './gradlew run')
+* run server (can be done by running *main* method fromm BootApp class OR by './gradlew bootRun')
 * open scores.html in web browser (JS scripts subscribe for messages)
 * go to "localhost:8080", fill in form and send it
 * check on client, should have new values updated
