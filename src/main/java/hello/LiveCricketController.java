@@ -18,8 +18,8 @@ public class LiveCricketController
     @Autowired
     private SimpMessagingTemplate template;
 
-    @RequestMapping(value = "/send-update", method = RequestMethod.POST)
-    @SendTo("/topic/myscores")
+    @RequestMapping(value = "${updateTriggeringEndpoint}", method = RequestMethod.POST)
+    @SendTo("${updateDestinationEndpoint}")
     public String handleRequest(HttpServletRequest request, HttpServletResponse response)
     {
         final List<Batsman> list = new ArrayList<>();
@@ -31,7 +31,7 @@ public class LiveCricketController
         batsmanB.setRuns(Integer.parseInt(request.getParameter("runs-b")));
         batsmanB.setBalls(Integer.parseInt(request.getParameter("balls-b")));
         list.add(batsmanB);
-        template.convertAndSend("/topic/myscores", list);
+        template.convertAndSend("${updateDestinationEndpoint}", list);
         return "index.html";
     }
 
