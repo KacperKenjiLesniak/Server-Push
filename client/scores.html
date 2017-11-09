@@ -41,7 +41,7 @@
 <div class="liveScore" ng-app="kswaughsLiveScore" ng-controller="LiveController">
     <p>Cricket - Live Score</p>
     <ul>
-        <li ng-repeat="x in myres">{{$index+1}} - {{x.name}} - <b>{{x.runs}}</b> runs (<b>{{x.balls}}</b>balls)</li>
+        <li ng-repeat="x in myres">{{$index+1}} - {{x.senderName}} - {{x.receiverName}} Message: (<b>{{x.message}}</b>)</li>
     </ul>
 </div>
 </body>

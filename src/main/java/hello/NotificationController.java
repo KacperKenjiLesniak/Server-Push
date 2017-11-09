@@ -1,5 +1,7 @@
 package hello;
 
+import Messenger.MessengerNotification;
+import Messenger.MessengerNotificationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class LiveCricketController
+public class NotificationController
 {
     @Autowired
     private SimpMessagingTemplate template;
@@ -22,16 +24,14 @@ public class LiveCricketController
     @SendTo("/topic/myscores")
     public String handleRequest(HttpServletRequest request, HttpServletResponse response)
     {
-        final List<Batsman> list = new ArrayList<>();
-        final Batsman batsmanA = new Batsman();
-        batsmanA.setRuns(Integer.parseInt(request.getParameter("runs-a")));
-        batsmanA.setBalls(Integer.parseInt(request.getParameter("balls-a")));
-        list.add(batsmanA);
-        final Batsman batsmanB = new Batsman();
-        batsmanB.setRuns(Integer.parseInt(request.getParameter("runs-b")));
-        batsmanB.setBalls(Integer.parseInt(request.getParameter("balls-b")));
-        list.add(batsmanB);
-        template.convertAndSend("/topic/myscores", list);
+        final List<MessengerNotification> notificationList = new ArrayList<>();
+        final MessengerNotification notificationA = new MessengerNotificationBuilder()
+                .withMessage(request.getParameter("message"))
+                .withSenderName(request.getParameter("sender-name"))
+                .withReceiverName(request.getParameter("receiver-name"))
+                .Build();
+        notificationList.add(notificationA);
+        template.convertAndSend("/topic/myscores", notificationList);
         return "index.html";
     }
 
