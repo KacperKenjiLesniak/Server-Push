@@ -1,21 +1,18 @@
-package Messenger;
+package messenger;
 
-import Notification.Notification;
+import notification.Notification;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 
-/**
- * Created by kenjik on 06.11.17.
- */
 public class MessengerNotification implements Notification {
 
     private String senderName;
     private String receiverName;
-    private Date sendDate;
+    private LocalDateTime sendDate;
     private String message;
 
-    public MessengerNotification(String senderName, String receiverName, Date sendDate, String message) {
+    MessengerNotification(String senderName, String receiverName, LocalDateTime sendDate, String message) {
         this.senderName = senderName;
         this.receiverName = receiverName;
         this.sendDate = sendDate;
@@ -38,11 +35,11 @@ public class MessengerNotification implements Notification {
         this.receiverName = receiverName;
     }
 
-    public Date getSendDate() {
+    public LocalDateTime getSendDate() {
         return sendDate;
     }
 
-    public void setSendDate(Date sendDate) {
+    public void setSendDate(LocalDateTime sendDate) {
         this.sendDate = sendDate;
     }
 

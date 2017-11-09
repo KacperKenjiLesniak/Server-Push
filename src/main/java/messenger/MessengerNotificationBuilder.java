@@ -1,14 +1,11 @@
-package Messenger;
+package messenger;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-/**
- * Created by kenjik on 06.11.17.
- */
 public class MessengerNotificationBuilder {
     private String newSenderName;
     private String newReceiverName;
-    private Date newSendDate;
+    private LocalDateTime newSendDate;
     private String newMessage;
 
     public MessengerNotificationBuilder(){
@@ -25,7 +22,7 @@ public class MessengerNotificationBuilder {
         return this;
     }
 
-    public MessengerNotificationBuilder withSendDate(Date newSendDate){
+    public MessengerNotificationBuilder withSendDate(LocalDateTime newSendDate){
         this.newSendDate = newSendDate;
         return this;
     }
@@ -35,7 +32,7 @@ public class MessengerNotificationBuilder {
         return this;
     }
 
-    public MessengerNotification Build(){
+    public MessengerNotification build(){
         return new MessengerNotification(newSenderName, newReceiverName, newSendDate, newMessage);
     }
 }

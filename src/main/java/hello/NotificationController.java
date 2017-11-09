@@ -1,7 +1,8 @@
 package hello;
 
-import Messenger.MessengerNotification;
-import Messenger.MessengerNotificationBuilder;
+import messenger.MessengerNotification;
+import messenger.MessengerNotificationBuilder;
+import notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -24,12 +25,12 @@ public class NotificationController
     @SendTo("/topic/myscores")
     public String handleRequest(HttpServletRequest request, HttpServletResponse response)
     {
-        final List<MessengerNotification> notificationList = new ArrayList<>();
-        final MessengerNotification notificationA = new MessengerNotificationBuilder()
+        final List<Notification> notificationList = new ArrayList<>();
+        final Notification notificationA = new MessengerNotificationBuilder()
                 .withMessage(request.getParameter("message"))
                 .withSenderName(request.getParameter("sender-name"))
                 .withReceiverName(request.getParameter("receiver-name"))
-                .Build();
+                .build();
         notificationList.add(notificationA);
         template.convertAndSend("/topic/myscores", notificationList);
         return "index.html";
