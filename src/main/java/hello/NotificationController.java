@@ -1,6 +1,5 @@
 package hello;
 
-import messenger.MessengerNotification;
 import messenger.MessengerNotificationBuilder;
 import notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
