@@ -4,6 +4,7 @@
 #Intellij
 .idea/
 build/
+*.iml
 
 # Compiled class file
 *.class
