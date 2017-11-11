@@ -1,6 +1,7 @@
 package hello;
 
 import messenger.MessengerNotificationBuilder;
+import messenger.MessengerRequestProcessor;
 import notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -8,6 +9,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import request.Request;
+import request.RequestProcessor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,13 +27,9 @@ public class NotificationController
     @SendTo("${updateDestinationEndpoint}")
     public String handleRequest(HttpServletRequest request, HttpServletResponse response)
     {
+        RequestProcessor processor = new MessengerRequestProcessor();
         final List<Notification> notificationList = new ArrayList<>();
-        final Notification notificationA = new MessengerNotificationBuilder()
-                .withMessage(request.getParameter("message"))
-                .withSenderName(request.getParameter("sender-name"))
-                .withReceiverName(request.getParameter("receiver-name"))
-                .build();
-        notificationList.add(notificationA);
+        notificationList.add(processor.processRequest(request));
         template.convertAndSend("${updateDestinationEndpoint}", notificationList);
         return "index.html";
     }
