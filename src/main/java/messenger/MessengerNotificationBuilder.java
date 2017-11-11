@@ -5,6 +5,8 @@ import notification.NotificationBuilder;
 import java.time.LocalDateTime;
 
 public class MessengerNotificationBuilder implements NotificationBuilder {
+    private String newSenderId;
+    private String newReceiverId;
     private String newSenderName;
     private String newReceiverName;
     private LocalDateTime newSendDate;
@@ -12,6 +14,16 @@ public class MessengerNotificationBuilder implements NotificationBuilder {
 
     public MessengerNotificationBuilder(){
 
+    }
+
+    public MessengerNotificationBuilder withSenderId(String newSenderId){
+        this.newSenderId = newSenderId;
+        return this;
+    }
+
+    public MessengerNotificationBuilder withReceiverId(String newReceiverId){
+        this.newReceiverId = newReceiverId;
+        return this;
     }
 
     public MessengerNotificationBuilder withSenderName(String newSenderName){
@@ -35,6 +47,6 @@ public class MessengerNotificationBuilder implements NotificationBuilder {
     }
 
     public MessengerNotification build(){
-        return new MessengerNotification(newSenderName, newReceiverName, newSendDate, newMessage);
+        return new MessengerNotification(newSenderId, newReceiverId, newSenderName, newReceiverName, newSendDate, newMessage);
     }
 }
