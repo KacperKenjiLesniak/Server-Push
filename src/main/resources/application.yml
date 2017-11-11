@@ -1,0 +1,18 @@
+spring:
+    profiles: test
+updateTriggeringEndpoint: /send-update
+updateDestinationEndpoint: /topic/myscores
+environment: test
+servers:
+    - www.abc.test.com
+    - www.xyz.test.com
+
+---
+spring:
+    profiles: prod
+updateTriggeringEndpoint: /send-update
+updateDestinationEndpoint: /topic/myscores
+environment: production
+servers:
+    - www.abc.com
+    - www.xyz.com

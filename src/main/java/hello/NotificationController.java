@@ -1,6 +1,5 @@
 package hello;
 
-import messenger.MessengerNotification;
 import messenger.MessengerNotificationBuilder;
 import messenger.MessengerRequestProcessor;
 import notification.Notification;
@@ -24,14 +23,14 @@ public class NotificationController
     @Autowired
     private SimpMessagingTemplate template;
 
-    @RequestMapping(value = "/send-update", method = RequestMethod.POST)
-    @SendTo("/topic/myscores")
+    @RequestMapping(value = "${updateTriggeringEndpoint}", method = RequestMethod.POST)
+    @SendTo("${updateDestinationEndpoint}")
     public String handleRequest(HttpServletRequest request, HttpServletResponse response)
     {
         RequestProcessor processor = new MessengerRequestProcessor();
         final List<Notification> notificationList = new ArrayList<>();
         notificationList.add(processor.processRequest(request));
-        template.convertAndSend("/topic/myscores", notificationList);
+        template.convertAndSend("${updateDestinationEndpoint}", notificationList);
         return "index.html";
     }
 
