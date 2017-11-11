@@ -13,6 +13,11 @@ public class Request {
         this.httpServletRequest = httpServletRequest;
     }
 
+    public HttpServletRequest getHttpServletRequest()
+    {
+        return httpServletRequest;
+    }
+
     // Exemplary method, others to be implemented
     public String getPayload() throws IOException
     {

@@ -2,32 +2,27 @@ package request;
 
 import notification.Notification;
 
+import javax.servlet.http.HttpServletRequest;
+
 public abstract class RequestProcessor {
 
-    protected Request request;
-
-    public RequestProcessor(Request request)
+    public final Notification processRequest(HttpServletRequest request)
     {
-        this.request = request;
-    }
-
-    public Notification processRequest()
-    {
-        preprocess();
-        Notification notification = constructNotification();
-        postprocess(notification);
+        preprocess(request);
+        Notification notification = constructNotification(request);
+        postprocess(request, notification);
 
         return notification;
     }
 
-    protected void preprocess()
+    protected void preprocess(HttpServletRequest request)
     {
     }
 
     // This is the method which the framework user needs to implement
-    protected abstract Notification constructNotification();
+    protected abstract Notification constructNotification(HttpServletRequest request);
 
-    protected void postprocess(Notification notification)
+    protected void postprocess(HttpServletRequest request, Notification notification)
     {
     }
 }

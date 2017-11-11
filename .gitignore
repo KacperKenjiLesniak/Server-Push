@@ -7,6 +7,7 @@ build/
 *.iml
 
 # Compiled class file
+out/
 *.class
 
 # Log file
