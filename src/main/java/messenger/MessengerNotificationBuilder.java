@@ -1,8 +1,10 @@
 package messenger;
 
+import notification.NotificationBuilder;
+
 import java.time.LocalDateTime;
 
-public class MessengerNotificationBuilder {
+public class MessengerNotificationBuilder implements NotificationBuilder {
     private String newSenderName;
     private String newReceiverName;
     private LocalDateTime newSendDate;
