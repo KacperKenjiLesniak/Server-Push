@@ -13,7 +13,7 @@
 
             $scope.myres = [];
 
-            $stomp.connect('http://localhost:8080/livescore-websocket', {})
+            $stomp.connect('http://localhost:8090/livescore-websocket', {})
                 .then(function (frame) {
                     var subscription = $stomp.subscribe('/topic/myscores',
                         function (payload, headers, res) {

@@ -22,13 +22,20 @@ public class NotificationController
     private SimpMessagingTemplate template;
 
     @RequestMapping(value = "/send-update", method = RequestMethod.POST)
-    @SendTo("/topic/myscores")
     public String handleRequest(HttpServletRequest request, HttpServletResponse response)
     {
         RequestProcessor processor = new MessengerRequestProcessor();
         final List<Notification> notificationList = new ArrayList<>();
         notificationList.add(processor.processRequest(request));
         template.convertAndSend("/topic/myscores", notificationList);
+//        getConfig().getTriggerEndpointConfigurations()
+//                .stream()
+//                .filter(endpointConf -> endpointConf.getTriggerEndpoint().equals("/app")) //we can pass stuff in
+//                // request and compare to this here
+//                .forEach(endpointConf -> endpointConf.getSendToEndpoints()
+//                        .forEach(endpoint -> template.convertAndSend(endpoint, notificationList)
+//                ));
+
         return "index.html";
     }
 

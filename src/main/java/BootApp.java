@@ -1,23 +1,21 @@
-import configuration.ConfigurationYAML;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import app.TriggerEndpointConfiguration;
+import app.UserConfiguration;
+import app.UserConfigurationBuilder;
+import com.google.common.collect.ImmutableList;
 
-@SpringBootApplication
-@ComponentScan({"configuration", "controllers"})
 public class BootApp
 {
-    @Autowired
-    private ConfigurationYAML configuration;
-
     public static void main(String[] args)
     {
-        SpringApplication.run(new Object[]{BootApp.class}, args);
-    }
+        final UserConfiguration userConfiguration = UserConfigurationBuilder.builder()
+                .withPort(8090)
+                .withBrokerDestinationEndpoint("/topic")
+                .withStompConnectionEndpoint("/livescore-websocket")
+                .withTriggerEndpointConfigurations(ImmutableList.of(
+                        new TriggerEndpointConfiguration("/app", ImmutableList.of("/topic/myscores"))
+                ))
+                .build();
 
-    public void run(String... args) throws Exception {
-        System.out.println("[SERVER PUSH] using environment: " + configuration.getEnvironment());
-        System.out.println("[SREVER PUSH] servers: " + configuration.getServers());
+        new PushServer(userConfiguration).run();
     }
 }
