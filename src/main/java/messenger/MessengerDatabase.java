@@ -5,36 +5,38 @@ import notification.Notification;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class MessengerDatabase {
 
-    private HashMap<String, String> idToNameMap;
+    private Map<String, String> idToNameMap;
 
-    private HashSet<Notification> storedNotifications;
+    private Set<Notification> storedNotifications;
 
-    public MessengerDatabase() {
+    private MessengerDatabase() {
         storedNotifications = new HashSet<>();
-        try {
-            FileInputStream fis = new FileInputStream("src/main/resources/idToName.ser");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            idToNameMap = (HashMap) ois.readObject();
-            ois.close();
-            fis.close();
+    }
+
+    public static MessengerDatabase initialize(){
+        MessengerDatabase database = new MessengerDatabase();
+        try (final FileInputStream fis =
+                     new FileInputStream("src/main/resources/idToName.ser");
+             final ObjectInputStream ois =
+                     new ObjectInputStream(fis)) {
+            database.idToNameMap = (Map) ois.readObject();
         } catch (IOException ioe) {
             ioe.printStackTrace();
-            return;
         } catch (ClassNotFoundException c) {
             System.out.println("Class not found");
             c.printStackTrace();
-            return;
         }
+        return database;
     }
 
     public String getNameFromId(String id) {
-        if (idToNameMap.containsKey(id)) return idToNameMap.get(id);
-        else return "Unknown";
+        return idToNameMap.getOrDefault(id, "Unknown");
     }
 
     public void addNotification(Notification notification) {

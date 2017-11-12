@@ -17,7 +17,7 @@ public class MessengerRequestProcessor extends RequestProcessor {
     @Override
     protected void preprocess(HttpServletRequest request) {
         super.preprocess(request);
-        database = new MessengerDatabase();
+        database = MessengerDatabase.initialize();
         senderName = database.getNameFromId(request.getParameter("sender-id"));
         receiverName = database.getNameFromId(request.getParameter("receiver-id"));
         sendDate = LocalDateTime.now();

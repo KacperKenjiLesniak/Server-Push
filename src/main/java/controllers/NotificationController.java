@@ -1,6 +1,5 @@
 package controllers;
 
-import messenger.MessengerNotification;
 import messenger.MessengerRequestProcessor;
 import notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
