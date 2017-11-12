@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 public class ImageMessengerRequestProcessor extends RequestProcessor {
 
     private MultipartFile image;
-    String imageName;
-    long imageSize;
+    private String imageName;
+    private long imageSize;
 
     @Override
     protected void preprocess(HttpServletRequest request)

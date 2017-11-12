@@ -18,7 +18,7 @@ public class ImageMessengerNotification implements Notification {
     private long sendImageSize;
     private String sendImageName;
 
-    public ImageMessengerNotification(String senderId, String receiverId, String senderName, String receiverName, LocalDateTime sendDate, byte[] sendImage, long sendImageSize, String sendImageName) {
+    ImageMessengerNotification(String senderId, String receiverId, String senderName, String receiverName, LocalDateTime sendDate, byte[] sendImage, long sendImageSize, String sendImageName) {
 
         this.senderId = senderId;
         this.receiverId = receiverId;
