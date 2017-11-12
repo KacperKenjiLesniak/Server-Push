@@ -1,11 +1,9 @@
 package controllers;
 
-import app.UserConfiguration;
+import configuration.UserConfiguration;
 import messenger.MessengerRequestProcessor;
 import notification.Notification;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +18,7 @@ import java.util.List;
 @Controller
 public class NotificationController
 {
-    @Autowired
-    private BeanFactory beanFactory;
+    private UserConfiguration configuration = UserConfiguration.getInstance();
 
     @Autowired
     private SimpMessagingTemplate template;
@@ -29,24 +26,18 @@ public class NotificationController
     @RequestMapping(value = "/send-update", method = RequestMethod.POST)
     public String handleRequest(HttpServletRequest request, HttpServletResponse response)
     {
-        RequestProcessor processor = new MessengerRequestProcessor();
+        final RequestProcessor processor = new MessengerRequestProcessor();
         final List<Notification> notificationList = new ArrayList<>();
         notificationList.add(processor.processRequest(request));
-        template.convertAndSend("/topic/myscores", notificationList);
-//        getConfig().getTriggerEndpointConfigurations()
-//                .stream()
-//                .filter(endpointConf -> endpointConf.getTriggerEndpoint().equals("/app")) //we can pass stuff in
-//                // request and compare to this here
-//                .forEach(endpointConf -> endpointConf.getSendToEndpoints()
-//                        .forEach(endpoint -> template.convertAndSend(endpoint, notificationList)
-//                ));
+        configuration.getTriggerEndpointConfigurations()
+                .stream()
+                .filter(endpointConf -> endpointConf.getTriggerEndpoint().equals("/app")) //we can pass stuff in
+                // request and compare to this here
+                .forEach(endpointConf -> endpointConf.getSendToEndpoints()
+                        .forEach(endpoint -> template.convertAndSend(endpoint, notificationList)
+                ));
 
         return "index.html";
-    }
-
-    private UserConfiguration getConfig()
-    {
-        return (UserConfiguration) beanFactory.getBean(UserConfiguration.class.getName());
     }
 
     @RequestMapping({"/", "/home"})

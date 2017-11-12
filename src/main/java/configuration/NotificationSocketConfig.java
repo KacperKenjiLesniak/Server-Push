@@ -1,9 +1,5 @@
 package configuration;
 
-import app.TriggerEndpointConfiguration;
-import app.UserConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
@@ -17,39 +13,23 @@ import java.util.stream.Collectors;
 @EnableWebSocketMessageBroker
 public class NotificationSocketConfig extends AbstractWebSocketMessageBrokerConfigurer
 {
-    @Bean
-    private UserConfiguration get()
-    {
-        return null;
-    }
-
-    @Autowired
-    private UserConfiguration userConfiguration;
+    private UserConfiguration configuration = UserConfiguration.getInstance();
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config)
     {
-        final List<String> list = getConfig().getTriggerEndpointConfigurations()
+        final List<String> list = configuration.getTriggerEndpointConfigurations()
                 .stream()
                 .map(TriggerEndpointConfiguration::getTriggerEndpoint)
                 .collect(Collectors.toList());
         config.setApplicationDestinationPrefixes(list.toArray(new String[list.size()]));
-        config.enableSimpleBroker(getConfig().getBrokerDestinationEndpoint());
-//        config.setApplicationDestinationPrefixes("/app/idontknow");
-//        config.enableSimpleBroker("/adu");
+        config.enableSimpleBroker(configuration.getBrokerDestinationEndpoint());
 
-    }
-
-    private UserConfiguration getConfig()
-    {
-//        return (UserConfiguration) beanFactory.getBean(UserConfiguration.class.getName());
-        return userConfiguration;
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry)
     {
-        registry.addEndpoint("/app/idontknow");
-//        registry.addEndpoint(getConfig().getStompConnectionEndpoint()).setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint(configuration.getStompConnectionEndpoint()).setAllowedOrigins("*").withSockJS();
     }
 }

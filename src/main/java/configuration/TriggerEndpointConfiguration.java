@@ -1,4 +1,4 @@
-package app;
+package configuration;
 
 import java.util.List;
 
