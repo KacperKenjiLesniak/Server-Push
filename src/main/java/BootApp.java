@@ -16,6 +16,6 @@ public class BootApp
                 ))
                 .build();
 
-        new PushServer(userConfiguration).run();
+        PushServer.run(userConfiguration, args);
     }
 }

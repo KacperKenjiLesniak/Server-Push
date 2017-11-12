@@ -1,7 +1,9 @@
 package controllers;
 
+import app.UserConfiguration;
 import messenger.MessengerRequestProcessor;
 import notification.Notification;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -18,6 +20,9 @@ import java.util.List;
 @Controller
 public class NotificationController
 {
+    @Autowired
+    private BeanFactory beanFactory;
+
     @Autowired
     private SimpMessagingTemplate template;
 
@@ -37,6 +42,11 @@ public class NotificationController
 //                ));
 
         return "index.html";
+    }
+
+    private UserConfiguration getConfig()
+    {
+        return (UserConfiguration) beanFactory.getBean(UserConfiguration.class.getName());
     }
 
     @RequestMapping({"/", "/home"})

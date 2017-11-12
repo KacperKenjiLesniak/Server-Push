@@ -3,7 +3,7 @@ package configuration;
 import app.TriggerEndpointConfiguration;
 import app.UserConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
@@ -17,8 +17,14 @@ import java.util.stream.Collectors;
 @EnableWebSocketMessageBroker
 public class NotificationSocketConfig extends AbstractWebSocketMessageBrokerConfigurer
 {
+    @Bean
+    private UserConfiguration get()
+    {
+        return null;
+    }
+
     @Autowired
-    private ApplicationContext context;
+    private UserConfiguration userConfiguration;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config)
@@ -29,17 +35,21 @@ public class NotificationSocketConfig extends AbstractWebSocketMessageBrokerConf
                 .collect(Collectors.toList());
         config.setApplicationDestinationPrefixes(list.toArray(new String[list.size()]));
         config.enableSimpleBroker(getConfig().getBrokerDestinationEndpoint());
+//        config.setApplicationDestinationPrefixes("/app/idontknow");
+//        config.enableSimpleBroker("/adu");
 
     }
 
     private UserConfiguration getConfig()
     {
-        return (UserConfiguration) context.getBean(UserConfiguration.class.getName());
+//        return (UserConfiguration) beanFactory.getBean(UserConfiguration.class.getName());
+        return userConfiguration;
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry)
     {
-        registry.addEndpoint(getConfig().getStompConnectionEndpoint()).setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/app/idontknow");
+//        registry.addEndpoint(getConfig().getStompConnectionEndpoint()).setAllowedOrigins("*").withSockJS();
     }
 }
