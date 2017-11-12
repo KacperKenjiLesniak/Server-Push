@@ -1,0 +1,55 @@
+package messenger;
+
+import notification.Notification;
+import request.RequestProcessor;
+
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+/**
+ * Created by annterina on 11.11.17.
+ */
+public class ImageMessengerRequestProcessor extends RequestProcessor {
+
+    MultipartFile image;
+    String imageName;
+    long imageSize;
+
+    @Override
+    protected void preprocess(HttpServletRequest request)
+    {
+        super.preprocess(request);
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        image = multipartRequest.getFile("image");
+        imageName = image.getOriginalFilename();
+        imageSize = image.getSize();
+    }
+
+    @Override
+    protected void postprocess(HttpServletRequest request, Notification notification)
+    {
+        super.postprocess(request, notification);
+    }
+
+    @Override
+    protected Notification constructNotification(HttpServletRequest request) {
+
+        try {
+            return new ImageMessengerNotificationBuilder()
+                    .withSenderName(request.getParameter("image-sender-name"))
+                    .withReceiverName(request.getParameter("image-receiver-name"))
+                    .withSendImage(image.getBytes())
+                    .withImageName(imageName)
+                    .withImageSize(imageSize)
+                    .build();
+        } catch (IOException e) {
+            return new ImageMessengerNotificationBuilder()
+                    .withSenderName(request.getParameter("image-sender-name"))
+                    .withReceiverName(request.getParameter("image-receiver-name"))
+                    .build();
+        }
+    }
+}

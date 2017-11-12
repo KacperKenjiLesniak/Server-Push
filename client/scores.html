@@ -13,7 +13,7 @@
 
             $scope.myres = [];
 
-            $stomp.connect('http://localhost:8080/livescore-websocket', {})
+            $stomp.connect('http://localhost:8090/livescore-websocket', {})
                 .then(function (frame) {
                     var subscription = $stomp.subscribe('/topic/myscores',
                         function (payload, headers, res) {
@@ -41,7 +41,14 @@
 <div class="liveScore" ng-app="kswaughsLiveScore" ng-controller="LiveController">
     <p>Cricket - Live Score</p>
     <ul>
-        <li ng-repeat="x in myres">{{$index+1}} - {{x.senderName}} - {{x.receiverName}} Message: (<b>{{x.message}}</b>) {{x.sendDate}}</li>
+        Size: {{myres.length}}
+        <li ng-repeat="x in myres"><b>{{$index+1}}</b>
+            <br> Sender: {{x.senderName}}
+            <br> Receiver: {{x.receiverName}}
+            <br> Image size: {{x.imageSize}}
+            <br> Image name: {{x.imageName}}
+            <br> <img ng-src="data:image/JPEG;base64,{{x.image}}">
+        </li>
     </ul>
 </div>
 </body>
