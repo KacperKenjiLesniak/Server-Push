@@ -7,14 +7,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 /**
  * Created by annterina on 11.11.17.
  */
 public class ImageMessengerRequestProcessor extends RequestProcessor {
 
-    MultipartFile image;
+    private MultipartFile image;
     String imageName;
     long imageSize;
 
@@ -37,19 +36,11 @@ public class ImageMessengerRequestProcessor extends RequestProcessor {
     @Override
     protected Notification constructNotification(HttpServletRequest request) {
 
-        try {
-            return new ImageMessengerNotificationBuilder()
-                    .withSenderName(request.getParameter("image-sender-name"))
-                    .withReceiverName(request.getParameter("image-receiver-name"))
-                    .withSendImage(image.getBytes())
-                    .withImageName(imageName)
-                    .withImageSize(imageSize)
-                    .build();
-        } catch (IOException e) {
-            return new ImageMessengerNotificationBuilder()
-                    .withSenderName(request.getParameter("image-sender-name"))
-                    .withReceiverName(request.getParameter("image-receiver-name"))
-                    .build();
-        }
+        return new ImageMessengerNotificationBuilder()
+                .withSenderName(request.getParameter("image-sender-name"))
+                .withReceiverName(request.getParameter("image-receiver-name"))
+                .withImage(image)
+                .build();
     }
+
 }

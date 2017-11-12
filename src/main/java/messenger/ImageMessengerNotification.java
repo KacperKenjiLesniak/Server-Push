@@ -14,19 +14,20 @@ public class ImageMessengerNotification implements Notification {
     private String senderName;
     private String receiverName;
     private LocalDateTime sendDate;
-    private String imageName;
-    private long imageSize;
-    private byte[] image;
+    private byte[] sendImage;
+    private long sendImageSize;
+    private String sendImageName;
 
-    public ImageMessengerNotification(String senderId, String receiverId, String senderName, String receiverName, LocalDateTime sendDate, String imageName, long imageSize, byte[] image) {
+    public ImageMessengerNotification(String senderId, String receiverId, String senderName, String receiverName, LocalDateTime sendDate, byte[] sendImage, long sendImageSize, String sendImageName) {
+
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.senderName = senderName;
         this.receiverName = receiverName;
         this.sendDate = sendDate;
-        this.imageName = imageName;
-        this.imageSize = imageSize;
-        this.image = image;
+        this.sendImage = sendImage;
+        this.sendImageSize = sendImageSize;
+        this.sendImageName = sendImageName;
     }
 
     public String getSenderId() {
@@ -49,15 +50,16 @@ public class ImageMessengerNotification implements Notification {
         return sendDate;
     }
 
-    public String getImageName() {
-        return imageName;
+    public byte[] getSendImage() {
+        return sendImage;
     }
 
-    public long getImageSize() {
-        return imageSize;
+    public long getSendImageSize() {
+        return sendImageSize;
     }
 
-    public byte[] getImage() {
-        return image;
+    public String getSendImageName() {
+        return sendImageName;
     }
+
 }

@@ -1,8 +1,10 @@
 package messenger;
 
-import notification.Notification;
 import notification.NotificationBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.LocalDateTime;
 
 /**
@@ -15,9 +17,9 @@ public class ImageMessengerNotificationBuilder implements NotificationBuilder {
     private String newSenderName;
     private String newReceiverName;
     private LocalDateTime newSendDate;
-    private String imageName;
-    private long imageSize;
     private byte[] newSendImage;
+    private long newSendImageSize;
+    private String newSendImageName;
 
     public ImageMessengerNotificationBuilder() {}
 
@@ -46,23 +48,20 @@ public class ImageMessengerNotificationBuilder implements NotificationBuilder {
         return this;
     }
 
-    public ImageMessengerNotificationBuilder withSendImage(byte[] newSendImage) {
-        this.newSendImage = newSendImage;
+    public ImageMessengerNotificationBuilder withImage(MultipartFile newSendImage) {
+        try {
+            this.newSendImage = newSendImage.getBytes();
+            this.newSendImageSize = newSendImage.getSize();
+            this.newSendImageName = newSendImage.getOriginalFilename();
+        } catch (IOException e) {
+            throw new UncheckedIOException("Could not get bytes from image", e);
+        }
         return this;
     }
 
     @Override
     public ImageMessengerNotification build() {
-        return new ImageMessengerNotification(newSenderId, newReceiverId, newSenderName, newReceiverName, newSendDate, imageName, imageSize, newSendImage);
+        return new ImageMessengerNotification(newSenderId, newReceiverId, newSenderName, newReceiverName, newSendDate, newSendImage, newSendImageSize, newSendImageName);
     }
 
-    public ImageMessengerNotificationBuilder withImageSize(Long imageSize) {
-        this.imageSize = imageSize;
-        return this;
-    }
-
-    public ImageMessengerNotificationBuilder withImageName(String imageName) {
-        this.imageName = imageName;
-        return this;
-    }
 }
