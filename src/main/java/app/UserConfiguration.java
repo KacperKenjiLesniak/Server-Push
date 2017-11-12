@@ -2,6 +2,8 @@ package app;
 
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class UserConfiguration
 {
     private final int port;
@@ -9,15 +11,20 @@ public class UserConfiguration
     private final String brokerDestinationEndpoint;
     private final List<TriggerEndpointConfiguration> triggerEndpointConfigurations;
 
-    UserConfiguration(final int port,
+    public UserConfiguration(final int port,
                       final String stompConnectionEndpoint,
                       final String brokerDestinationEndpoint,
                       final List<TriggerEndpointConfiguration> triggerEndpointConfigurations)
     {
-        this.port = port;
-        this.stompConnectionEndpoint = stompConnectionEndpoint;
-        this.brokerDestinationEndpoint = brokerDestinationEndpoint;
-        this.triggerEndpointConfigurations = triggerEndpointConfigurations;
+        checkNotNull(port);
+        checkNotNull(stompConnectionEndpoint);
+        checkNotNull(brokerDestinationEndpoint);
+        checkNotNull(triggerEndpointConfigurations);
+
+        this.port = checkNotNull(port);
+        this.stompConnectionEndpoint = checkNotNull(stompConnectionEndpoint);
+        this.brokerDestinationEndpoint = checkNotNull(brokerDestinationEndpoint);
+        this.triggerEndpointConfigurations = checkNotNull(triggerEndpointConfigurations);
     }
 
     public int getPort()
