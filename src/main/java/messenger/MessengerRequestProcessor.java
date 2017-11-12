@@ -5,31 +5,38 @@ import request.RequestProcessor;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 public class MessengerRequestProcessor extends RequestProcessor {
 
     private LocalDateTime sendDate;
+    private String senderName;
+    private String receiverName;
+    private MessengerDatabase database;
 
     @Override
-    protected void preprocess(HttpServletRequest request)
-    {
+    protected void preprocess(HttpServletRequest request) {
         super.preprocess(request);
+        database = MessengerDatabase.initialize();
+        senderName = database.getNameFromId(request.getParameter("sender-id"));
+        receiverName = database.getNameFromId(request.getParameter("receiver-id"));
         sendDate = LocalDateTime.now();
     }
 
     @Override
-    protected void postprocess(HttpServletRequest request, Notification notification)
-    {
+    protected void postprocess(HttpServletRequest request, Notification notification) {
         super.postprocess(request, notification);
+        database.addNotification(notification);
     }
 
     @Override
-    protected Notification constructNotification(HttpServletRequest request)
-    {
+    protected Notification constructNotification(HttpServletRequest request) {
         return new MessengerNotificationBuilder()
                 .withMessage(request.getParameter("message"))
-                .withSenderName(request.getParameter("sender-name"))
-                .withReceiverName(request.getParameter("receiver-name"))
+                .withSenderId(request.getParameter("sender-id"))
+                .withReceiverId(request.getParameter("receiver-id"))
+                .withSenderName(senderName)
+                .withReceiverName(receiverName)
                 .withSendDate(sendDate)
                 .build();
     }
