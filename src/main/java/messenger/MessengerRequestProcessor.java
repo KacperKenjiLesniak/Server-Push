@@ -15,8 +15,7 @@ public class MessengerRequestProcessor extends RequestProcessor {
     private MessengerDatabase database;
 
     @Override
-    protected void preprocess(HttpServletRequest request)
-    {
+    protected void preprocess(HttpServletRequest request) {
         super.preprocess(request);
         database = new MessengerDatabase();
         senderName = database.getNameFromId(request.getParameter("sender-id"));
@@ -25,14 +24,13 @@ public class MessengerRequestProcessor extends RequestProcessor {
     }
 
     @Override
-    protected void postprocess(HttpServletRequest request, Notification notification)
-    {
+    protected void postprocess(HttpServletRequest request, Notification notification) {
         super.postprocess(request, notification);
+        database.addNotification(notification);
     }
 
     @Override
-    protected Notification constructNotification(HttpServletRequest request)
-    {
+    protected Notification constructNotification(HttpServletRequest request) {
         return new MessengerNotificationBuilder()
                 .withMessage(request.getParameter("message"))
                 .withSenderId(request.getParameter("sender-id"))
