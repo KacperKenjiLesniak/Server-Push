@@ -8,6 +8,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import request.RequestProcessor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +38,15 @@ public class NotificationController
                         .forEach(endpoint -> template.convertAndSend(endpoint, notificationList)
                 ));
 
+        return "index.html";
+    }
+
+    @RequestMapping(value = "/image", method = RequestMethod.POST)
+    public String handleImageRequest(MultipartHttpServletRequest request, HttpServletResponse response) {
+        RequestProcessor processor = new ImageMessengerRequestProcessor();
+        final List<Notification> notificationList = new ArrayList<>();
+        notificationList.add(processor.processRequest(request));
+        template.convertAndSend("/topic/myscores", notificationList);
         return "index.html";
     }
 

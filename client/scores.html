@@ -41,7 +41,14 @@
 <div class="liveScore" ng-app="kswaughsLiveScore" ng-controller="LiveController">
     <p>Notification list:</p>
     <ul>
-        <li ng-repeat="x in myres">{{$index+1}} - {{x.senderName}} - {{x.receiverName}} Message: (<b>{{x.message}}</b>) {{x.sendDate}}</li>
+        Size: {{myres.length}}
+        <li ng-repeat="x in myres"><b>{{$index+1}}</b>
+            <br> Sender: {{x.senderName}}
+            <br> Receiver: {{x.receiverName}}
+            <br> Image size: {{x.sendImageSize}}
+            <br> Image name: {{x.sendImageName}}
+            <br><img ng-src="data:image/JPEG;base64,{{x.sendImage}}">
+        </li>
     </ul>
 </div>
 </body>
