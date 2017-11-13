@@ -1,6 +1,7 @@
 package controllers;
 
 import configuration.UserConfiguration;
+import messenger.ImageMessengerRequestProcessor;
 import messenger.MessengerRequestProcessor;
 import notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,6 @@ public class NotificationController
         final List<Notification> notificationList = new ArrayList<>();
         notificationList.add(processor.processRequest(request));
         configuration.getTriggerEndpointConfigurations()
-                .stream()
-                .filter(endpointConf -> endpointConf.getTriggerEndpoint().equals("/app")) //we can pass stuff in
-                // request and compare to this here
                 .forEach(endpointConf -> endpointConf.getSendToEndpoints()
                         .forEach(endpoint -> template.convertAndSend(endpoint, notificationList)
                 ));
@@ -46,7 +44,10 @@ public class NotificationController
         RequestProcessor processor = new ImageMessengerRequestProcessor();
         final List<Notification> notificationList = new ArrayList<>();
         notificationList.add(processor.processRequest(request));
-        template.convertAndSend("/topic/myscores", notificationList);
+        configuration.getTriggerEndpointConfigurations()
+                .forEach(endpointConf -> endpointConf.getSendToEndpoints()
+                        .forEach(endpoint -> template.convertAndSend(endpoint, notificationList)
+                        ));
         return "index.html";
     }
 
