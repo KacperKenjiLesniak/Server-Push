@@ -6,9 +6,6 @@ import org.springframework.web.socket.config.annotation.AbstractWebSocketMessage
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Configuration
 @EnableWebSocketMessageBroker
 public class NotificationSocketConfig extends AbstractWebSocketMessageBrokerConfigurer
@@ -18,13 +15,8 @@ public class NotificationSocketConfig extends AbstractWebSocketMessageBrokerConf
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config)
     {
-        final List<String> list = configuration.getTriggerEndpointConfigurations()
-                .stream()
-                .map(TriggerEndpointConfiguration::getTriggerEndpoint)
-                .collect(Collectors.toList());
-        config.setApplicationDestinationPrefixes(list.toArray(new String[list.size()]));
+        config.setApplicationDestinationPrefixes("/app");
         config.enableSimpleBroker(configuration.getBrokerDestinationEndpoint());
-
     }
 
     @Override
