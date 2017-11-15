@@ -7,6 +7,7 @@ import notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -25,13 +26,15 @@ public class NotificationController
     @Autowired
     private SimpMessagingTemplate template;
 
-    @RequestMapping(value = "/send-update", method = RequestMethod.POST)
-    public String handleRequest(HttpServletRequest request, HttpServletResponse response)
+    @RequestMapping(value = "/send/{trigger}", method = RequestMethod.POST)
+    public String handleRequest(HttpServletRequest request, HttpServletResponse response, @PathVariable String trigger)
     {
         final RequestProcessor processor = new MessengerRequestProcessor();
         final List<Notification> notificationList = new ArrayList<>();
         notificationList.add(processor.processRequest(request));
         configuration.getTriggerEndpointConfigurations()
+                .stream()
+                .filter(endpointConf -> endpointConf.getTriggerEndpoint().equals(String.format("/%s", trigger)))
                 .forEach(endpointConf -> endpointConf.getSendToEndpoints()
                         .forEach(endpoint -> template.convertAndSend(endpoint, notificationList)
                 ));

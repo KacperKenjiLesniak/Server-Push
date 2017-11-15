@@ -11,7 +11,7 @@ public class BootApp
                 "/livescore-websocket",
                 "/topic",
                 ImmutableList.of(
-                        new TriggerEndpointConfiguration("/app", ImmutableList.of("/topic/myscores")))
+                        new TriggerEndpointConfiguration("/text", ImmutableList.of("/topic/myscores")))
         );
 
         PushServer.run(userConfiguration, args);
