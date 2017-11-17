@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>HTML Text Examples</title>
-    </head>
+<head>
+    <meta charset="utf-8">
+    <title>HTML Text Examples</title>
+</head>
 
 <body>
-<form action="/send-update" method="post">
+<form action="/send/text" method="post">
     <div>
         Messenger sender id:<br>
         <input type="text" name="sender-id" id="sender-id"><br>
@@ -14,30 +14,30 @@
         Messenger receiver id:<br>
         <input type="text" name="receiver-id" id="receiver-id"><br>
 
-                Messenger message<br>
-                <input type="text" name="message" id="message"><br>
+        Messenger message<br>
+        <input type="text" name="message" id="message"><br>
 
-                <br>
-                <button type="submit" name="sa">SUBMIT</button>
-            </div>
-        </form>
+        <br>
+        <button type="submit" name="sa">SUBMIT</button>
+    </div>
+</form>
 
-        <br><br>
+<br><br>
 
-        <form method="POST" action="/image" enctype="multipart/form-data">
-            <div>
-                Image sender name: <br>
-                <input type="text" name="image-sender-name" id="image-sender-name"><br>
+<form method="POST" action="/send/image" enctype="multipart/form-data">
+    <div>
+        Image sender name: <br>
+        <input type="text" name="image-sender-name" id="image-sender-name"><br>
 
-                Image receiver name: <br>
-                <input type="text" name="image-receiver-name" id="image-receiver-name"><br>
+        Image receiver name: <br>
+        <input type="text" name="image-receiver-name" id="image-receiver-name"><br>
 
-                <label path="image">Select an image to upload </label><br>
-                <input type="file" name="image"/><br><br>
+        <label path="image">Select an image to upload </label><br>
+        <input type="file" name="image"/><br><br>
 
-                <input type="submit" value="SUBMIT" />
+        <input type="submit" value="SUBMIT"/>
 
-            </div>
-        </form>
-    </body>
+    </div>
+</form>
+</body>
 </html>
