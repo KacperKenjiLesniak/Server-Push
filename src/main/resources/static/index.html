@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
-    <title>HTML Text Examples</title>
+    <title>Notification Sender</title>
 </head>
 
 <body>
-<form action="/send/text" method="post">
+
+<h1>Messanger notification</h1>
+<form action="/send-update" method="post">
     <div>
-        Messenger sender id:<br>
+        Messenger sender id ("abc" or "def"):<br>
         <input type="text" name="sender-id" id="sender-id"><br>
 
-        Messenger receiver id:<br>
+        Messenger receiver id ("abc" or "def"):<br>
         <input type="text" name="receiver-id" id="receiver-id"><br>
 
         Messenger message<br>
@@ -22,9 +25,8 @@
     </div>
 </form>
 
-<br><br>
-
-<form method="POST" action="/send/image" enctype="multipart/form-data">
+<h1>Image notification</h1>
+<form method="POST" action="/image" enctype="multipart/form-data">
     <div>
         Image sender name: <br>
         <input type="text" name="image-sender-name" id="image-sender-name"><br>
@@ -32,12 +34,13 @@
         Image receiver name: <br>
         <input type="text" name="image-receiver-name" id="image-receiver-name"><br>
 
-        <label path="image">Select an image to upload </label><br>
+        Select an image to upload: <br>
         <input type="file" name="image"/><br><br>
 
-        <input type="submit" value="SUBMIT"/>
+        <input type="submit" value="SUBMIT" />
 
     </div>
 </form>
+
 </body>
 </html>
