@@ -45,6 +45,7 @@
         <li ng-repeat="x in myres"><b>{{$index+1}}</b>
             <br> Sender: {{x.senderName}}
             <br> Receiver: {{x.receiverName}}
+            <br> Message: {{x.message}}
             <br> Image size: {{x.sendImageSize}}
             <br> Image name: {{x.sendImageName}}
             <br><img ng-src="data:image/JPEG;base64,{{x.sendImage}}">

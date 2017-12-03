@@ -32,7 +32,7 @@ public class NotificationController
         final List<Notification> notificationList = new ArrayList<>();
         notificationList.add(processor.processRequest(request));
         template.convertAndSend("/topic/myscores", notificationList);
-        return "index.html";
+        return "redirect:/index.html";
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.POST)
@@ -41,7 +41,7 @@ public class NotificationController
         final List<Notification> notificationList = new ArrayList<>();
         notificationList.add(processor.processRequest(request));
         template.convertAndSend("/topic/myscores", notificationList);
-        return "index.html";
+        return "redirect:/index.html";
     }
 
     @RequestMapping({"/", "/home"})
