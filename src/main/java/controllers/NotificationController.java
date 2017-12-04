@@ -4,11 +4,13 @@ import messenger.ImageMessengerRequestProcessor;
 import messenger.MessengerRequestProcessor;
 import notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import request.RequestProcessor;
 
@@ -24,6 +26,9 @@ public class NotificationController
     @Autowired
     private SimpMessagingTemplate template;
 
+    @Autowired
+    private SessionHandler sessionHandler;
+
     @RequestMapping(value = "/send-update", method = RequestMethod.POST)
     @SendTo("/topic/myscores")
     public String handleRequest(HttpServletRequest request, HttpServletResponse response)
@@ -36,12 +41,20 @@ public class NotificationController
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.POST)
-    public String handleImageRequest(MultipartHttpServletRequest request, HttpServletResponse response) {
+    public String handleImageRequest(MultipartHttpServletRequest request, HttpServletResponse response)
+    {
         RequestProcessor processor = new ImageMessengerRequestProcessor();
         final List<Notification> notificationList = new ArrayList<>();
         notificationList.add(processor.processRequest(request));
         template.convertAndSend("/topic/myscores", notificationList);
         return "redirect:/index.html";
+    }
+
+    @RequestMapping(value = "/closeAll", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void closeAll()
+    {
+        sessionHandler.closeAll();
     }
 
     @RequestMapping({"/", "/home"})
