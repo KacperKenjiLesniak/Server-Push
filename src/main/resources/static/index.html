@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="pushServerServer">
 
 <head>
     <meta charset="utf-8">
@@ -7,6 +7,10 @@
 </head>
 
 <body>
+
+<div ng-controller="serverController as ctrl">
+    <button ng-click="ctrl.closeAllSockets()">Close all sockets</button>
+</div>
 
 <h1>Messanger notification</h1>
 <form action="/send-update" method="post">
@@ -41,6 +45,21 @@
 
     </div>
 </form>
+<script src="angular.js"></script>
+<script type="text/javascript">
+    angular
+        .module('pushServerServer', [])
+        .controller('serverController', serverController);
 
+    function serverController($http, $scope)
+    {
+        var vm = this;
+
+        vm.closeAllSockets = function () {
+            console.log("Closing all sockets from server...")
+            return $http.get('/closeAll');
+        };
+    }
+</script>
 </body>
 </html>
