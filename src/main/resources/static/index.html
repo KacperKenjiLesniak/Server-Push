@@ -13,7 +13,7 @@
 </div>
 
 <h1>Messanger notification</h1>
-<form action="/send-update" method="post">
+<form action="/send/text" method="post">
     <div>
         Messenger sender id ("abc" or "def"):<br>
         <input type="text" name="sender-id" id="sender-id"><br>
@@ -30,7 +30,7 @@
 </form>
 
 <h1>Image notification</h1>
-<form method="POST" action="/image" enctype="multipart/form-data">
+<form method="POST" action="/send/image" enctype="multipart/form-data">
     <div>
         Image sender name: <br>
         <input type="text" name="image-sender-name" id="image-sender-name"><br>
