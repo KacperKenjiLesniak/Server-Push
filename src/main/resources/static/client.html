@@ -39,7 +39,7 @@
 
     function stompConfig(ngstompProvider)
     {
-        console.log("Configurating connection...")
+        console.log("Configuring connection...")
         ngstompProvider
             .url('http://localhost:8080/livescore-websocket')
             .class(SockJS)
@@ -47,7 +47,7 @@
             .reconnectAfter(10); // long time for testing purposes
     }
 
-    function pushServerController(ngstomp, $http, $scope)
+    function pushServerController(ngstomp, $scope)
     {
         var vm = this; // view's model
 

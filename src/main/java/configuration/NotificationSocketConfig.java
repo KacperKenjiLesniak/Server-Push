@@ -19,6 +19,12 @@ public class NotificationSocketConfig extends WebSocketMessageBrokerConfiguratio
 {
     private UserConfiguration configuration = UserConfiguration.getInstance();
 
+    @Bean
+    public WebSocketHandler subProtocolWebSocketHandler()
+    {
+        return new StompSubProtocolWebSocketHandler(clientInboundChannel(), clientOutboundChannel());
+    }
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config)
     {
@@ -30,12 +36,6 @@ public class NotificationSocketConfig extends WebSocketMessageBrokerConfiguratio
     public void registerStompEndpoints(StompEndpointRegistry registry)
     {
         registry.addEndpoint(configuration.getStompConnectionEndpoint()).setAllowedOrigins("*").withSockJS();
-    }
-
-    @Bean
-    public WebSocketHandler subProtocolWebSocketHandler()
-    {
-        return new StompSubProtocolWebSocketHandler(clientInboundChannel(), clientOutboundChannel());
     }
 
     @Override
