@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html ng-app="pushServerClient">
+<head>
+    <meta charset="UTF-8">
+    <title>Messenger Client</title>
+
+    <style>
+        * {
+            font-family: Verdana, sans-serif;
+        }
+
+        li {
+            list-style: none;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: cornflowerblue;
+            color: white;
+            border-radius: 10px;
+            width: 400px;
+        }
+
+        h1 {
+            font-size: 20px;
+            color: darkblue;
+        }
+    </style>
+</head>
+<body>
+<div ng-controller="pushServerController as ctrl">
+    <h1>Received messages:</h1>
+    <ul>
+        <li ng-repeat="message in ctrl.messages">
+            <b> From: {{message[0].senderName}} </b><br/>
+            <b> To: {{message[0].receiverName}} </b><br/>
+            {{message[0].message}}
+        </li>
+    </ul>
+</div>
+
+<script src="sockjs-0.3.4.js"></script>
+<script src="stomp.js"></script>
+<script src="angular.js"></script>
+<script src="angular-stomp.js"></script>
+<script type="text/javascript">
+    angular
+        .module('pushServerClient', ['AngularStompDK'])
+        .config(stompConfig)
+        .controller('pushServerController', pushServerController);
+
+    function stompConfig(ngstompProvider)
+    {
+        console.log("Configuring connection...")
+        ngstompProvider
+            .url('http://localhost:8080/server-push')
+            .class(SockJS)
+            .autoConnect(true)
+            .reconnectAfter(10); // long time for testing purposes
+    }
+
+    function pushServerController(ngstomp, $scope)
+    {
+        var vm = this; // view's model
+
+        vm.messages = [];
+        vm.subscribeEndpoint = '/topic/messages';
+
+        function subscribe()
+        {
+            console.log("Subscribing...")
+            vm.unsubscriber = ngstomp
+                .subscribeTo(vm.subscribeEndpoint)
+                    .callback(handleIncomingMessage)
+                    .bindTo($scope)
+                    .withBodyInJson()
+                .connect();
+        }
+
+        function handleIncomingMessage(message)
+        {
+            console.log("Processing incoming message...");
+            vm.messages.push(message.body);
+        }
+
+        // Actually subscribing on page load
+        subscribe();
+    }
+</script>
+</body>
+</html>

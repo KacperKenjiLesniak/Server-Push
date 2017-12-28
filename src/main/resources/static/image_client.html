@@ -2,27 +2,43 @@
 <html ng-app="pushServerClient">
 <head>
     <meta charset="UTF-8">
-    <title>Client</title>
+    <title>Image Client</title>
 
     <style>
-        .liveScore {
-            color : blue;
+        * {
+            font-family: Verdana, sans-serif;
         }
 
         li {
             list-style: none;
-            padding: 0 0 10px 0;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: orange;
+            color: white;
+            border-radius: 10px;
+            width: 500px;
+        }
+
+        li img {
+            width: 100%;
+            margin: 10px auto 0;
+        }
+
+        h1 {
+            font-size: 20px;
+            color: darkorange;
         }
     </style>
 </head>
 <body>
-<div class="liveScore" ng-controller="pushServerController as ctrl">
-    <p>Notification list:</p>
+<div ng-controller="pushServerController as ctrl">
+    <h1>Received images:</h1>
     <ul>
         <li ng-repeat="message in ctrl.messages">
-            From: {{message[0].senderName}} <br/>
-            To: {{message[0].receiverName}} <br/>
-            Message: {{message[0].message}}
+            <b>{{message[0].senderName}}</b> sent <i>{{message[0].sendImageName}}</i> to
+            <b>{{message[0].receiverName}}</b><br/>
+            <b>Image size:</b> {{message[0].sendImageSize}} <br/>
+            <img ng-src="data:image/JPEG;base64,{{message[0].sendImage}}">
         </li>
     </ul>
 </div>
@@ -41,7 +57,7 @@
     {
         console.log("Configuring connection...")
         ngstompProvider
-            .url('http://localhost:8080/livescore-websocket')
+            .url('http://localhost:8080/server-push')
             .class(SockJS)
             .autoConnect(true)
             .reconnectAfter(10); // long time for testing purposes
@@ -52,16 +68,16 @@
         var vm = this; // view's model
 
         vm.messages = [];
-        vm.subscribeEndpoint = '/topic/myscores';
+        vm.subscribeEndpoint = '/topic/images';
 
         function subscribe()
         {
             console.log("Subscribing...")
             vm.unsubscriber = ngstomp
                 .subscribeTo(vm.subscribeEndpoint)
-                    .callback(handleIncomingMessage)
-                    .bindTo($scope)
-                    .withBodyInJson()
+                .callback(handleIncomingMessage)
+                .bindTo($scope)
+                .withBodyInJson()
                 .connect();
         }
 

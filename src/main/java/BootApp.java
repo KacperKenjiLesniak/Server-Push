@@ -8,10 +8,11 @@ public class BootApp
     {
         final UserConfiguration userConfiguration = UserConfiguration.tryCreatingSingleton(
                 8080,
-                "/livescore-websocket",
+                "/server-push",
                 "/topic",
                 ImmutableList.of(
-                        new TriggerEndpointConfiguration("/text", ImmutableList.of("/topic/myscores")))
+                        new TriggerEndpointConfiguration("/text", ImmutableList.of("/topic/messages")),
+                        new TriggerEndpointConfiguration("/image", ImmutableList.of("/topic/images")))
         );
 
         PushServer.run(userConfiguration, args);
