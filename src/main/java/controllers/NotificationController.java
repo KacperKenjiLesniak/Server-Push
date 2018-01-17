@@ -33,32 +33,38 @@ public class NotificationController
     @Autowired
     private SessionHandler sessionHandler;
 
-    @RequestMapping(value = "/send/{trigger}", method = RequestMethod.POST)
-    public String handleRequest(HttpServletRequest request, HttpServletResponse response, @PathVariable String trigger)
+    @RequestMapping(value = "/send/text", method = RequestMethod.POST)
+    public String handleMessengerRequest(HttpServletRequest request, HttpServletResponse response)
     {
-        final RequestProcessor processor = new MessengerRequestProcessor();
-        final List<Notification> notificationList = new ArrayList<>();
-        notificationList.add(processor.processRequest(request));
-        configuration.getTriggerEndpointConfigurations()
-                .stream()
-                .filter(endpointConf -> endpointConf.getTriggerEndpoint().equals(String.format("/%s", trigger)))
-                .forEach(endpointConf -> endpointConf.getSendToEndpoints()
-                        .forEach(endpoint -> template.convertAndSend(endpoint, notificationList)
-                        ));
+        request.setAttribute("trigger", "text");
+        RequestProcessor processor = new MessengerRequestProcessor();
+        handleRequestWithProcessor(processor, request);
 
         return "redirect:/index.html";
     }
 
-    @RequestMapping(value = "/image", method = RequestMethod.POST)
-    public String handleImageRequest(MultipartHttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/send/image", method = RequestMethod.POST)
+    public String handleImageRequest(HttpServletRequest request, HttpServletResponse response)
+    {
+        request.setAttribute("trigger", "image");
         RequestProcessor processor = new ImageMessengerRequestProcessor();
+        handleRequestWithProcessor(processor, request);
+
+        return "redirect:/index.html";
+    }
+
+    private void handleRequestWithProcessor(RequestProcessor processor, HttpServletRequest request)
+    {
+        String trigger = (String) request.getAttribute("trigger");
+
         final List<Notification> notificationList = new ArrayList<>();
         notificationList.add(processor.processRequest(request));
         configuration.getTriggerEndpointConfigurations()
-                .forEach(endpointConf -> endpointConf.getSendToEndpoints()
-                        .forEach(endpoint -> template.convertAndSend(endpoint, notificationList)
-                        ));
-        return "redirect:/index.html";
+                     .stream()
+                     .filter(endpointConf -> endpointConf.getTriggerEndpoint().equals(String.format("/%s", trigger)))
+                     .forEach(endpointConf -> endpointConf.getSendToEndpoints()
+                                                          .forEach(endpoint -> template.convertAndSend(endpoint, notificationList)
+                                                          ));
     }
 
     @RequestMapping(value = "/closeAll", method = RequestMethod.GET)
