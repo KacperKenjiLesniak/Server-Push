@@ -132,18 +132,16 @@
             var content = message.body[0];
             var clientID = content.clientID;
             var match = content.matchedClients;
-            console.log("Content: " + content);
 
-            if (clientID)
+            if (typeof clientID !== "undefined")
             {
                 vm.enrollments.push(clientID);
             }
-            else if (match)
+            else if (typeof match !== "undefined")
             {
                 vm.matches.push(match);
                 match.forEach(function (client, index, array) {
                     var i = vm.enrollments.indexOf(client);
-                    console.log("Index: "+ i);
                     vm.enrollments.splice(i, 1);
                 })
             }
