@@ -17,8 +17,7 @@ apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 
 jar {
-    baseName = 'gs-messaging-stomp-websocket'
-    version =  '0.1.0'
+    baseName = 'server-push'
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
