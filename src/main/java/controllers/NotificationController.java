@@ -1,6 +1,8 @@
 package controllers;
 
 import configuration.UserConfiguration;
+import matchmade.MatchmadeEnrollmentRequestProcessor;
+import matchmade.MatchmadeMatchReportRequestProcessor;
 import messenger.ImageMessengerRequestProcessor;
 import messenger.MessengerRequestProcessor;
 import notification.Notification;
@@ -48,6 +50,26 @@ public class NotificationController
     {
         request.setAttribute("trigger", "image");
         RequestProcessor processor = new ImageMessengerRequestProcessor();
+        handleRequestWithProcessor(processor, request);
+
+        return "redirect:/index.html";
+    }
+
+    @RequestMapping(value = "/send/matchmade/enrollment", method = RequestMethod.POST)
+    public String handleMatchmadeEnrollment(HttpServletRequest request, HttpServletResponse response)
+    {
+        request.setAttribute("trigger", "matchmade");
+        RequestProcessor processor = new MatchmadeEnrollmentRequestProcessor();
+        handleRequestWithProcessor(processor, request);
+
+        return "redirect:/index.html";
+    }
+
+    @RequestMapping(value = "/send/matchmade/match", method = RequestMethod.POST)
+    public String handleMatchmadeMatchReport(HttpServletRequest request, HttpServletResponse response)
+    {
+        request.setAttribute("trigger", "matchmade");
+        RequestProcessor processor = new MatchmadeMatchReportRequestProcessor();
         handleRequestWithProcessor(processor, request);
 
         return "redirect:/index.html";
