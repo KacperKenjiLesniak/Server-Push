@@ -1,10 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="pushServerClient">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Matchmade monitor</title>
+
+    <style>
+        * {
+            font-family: Verdana, sans-serif;
+            background-color: #222233;
+            color: #c0a4f4;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 65px;
+            margin: 150px 0 75px;
+        }
+
+        .flex-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+        }
+
+        .flex-section {
+            width: 50%;
+            margin: 0 20px;
+            text-align: center;
+        }
+
+        .results {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .results li {
+            padding: 15px;
+            margin: 10px 5px;
+            font-weight: bold;
+            border-radius: 15px;
+            display: inline-block;
+            color: white;
+        }
+
+        .waiting li {
+            background-color: #858389;
+        }
+
+        .matched li {
+            background-color: #00C20B;
+        }
+
+        .waiting,
+        .matched {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
-$END$
+<h1>Matchmade</h1>
+<div class="flex-container" ng-controller="pushServerController as ctrl">
+    <div class="flex-section">
+        <h2>Waiting:</h2>
+        <div class="results">
+            <ul class="waiting">
+                <li ng-repeat="clientID in ctrl.enrollments">
+                    {{clientID}}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex-section">
+        <h2>Matched:</h2>
+        <div class="results">
+            <ul class="matched">
+                <li ng-repeat="match in ctrl.matches">
+                    {{match}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="sockjs-0.3.4.js"></script>
+<script src="stomp.js"></script>
+<script src="angular.js"></script>
+<script src="angular-stomp.js"></script>
+<script type="text/javascript">
+    angular
+        .module('pushServerClient', ['AngularStompDK'])
+        .config(stompConfig)
+        .controller('pushServerController', pushServerController);
+
+    function stompConfig(ngstompProvider)
+    {
+        console.log("Configuring connection...")
+        ngstompProvider
+            .url('http://localhost:8080/server-push')
+            .class(SockJS)
+            .autoConnect(true)
+            .reconnectAfter(10);
+    }
+
+    function pushServerController(ngstomp, $scope)
+    {
+        var vm = this; // view's model
+
+        vm.enrollments = [];
+        vm.matches = [];
+        vm.subscribeEndpoint = '/topic/matchmade';
+
+        function subscribe()
+        {
+            console.log("Subscribing...")
+            vm.unsubscriber = ngstomp
+                .subscribeTo(vm.subscribeEndpoint)
+                .callback(handleIncomingMessage)
+                .bindTo($scope)
+                .withBodyInJson()
+                .connect();
+        }
+
+        function handleIncomingMessage(message)
+        {
+            var content = message.body[0];
+            var clientID = content.clientID;
+            var match = content.matchedClients;
+            console.log("Content: " + content);
+
+            if (clientID)
+            {
+                vm.enrollments.push(clientID);
+            }
+            else if (match)
+            {
+                vm.matches.push(match);
+                match.forEach(function (client, index, array) {
+                    var i = vm.enrollments.indexOf(client);
+                    console.log("Index: "+ i);
+                    vm.enrollments.splice(i, 1);
+                })
+            }
+        }
+
+        // Actually subscribing on page load
+        subscribe();
+    }
+</script>
 </body>
 </html>

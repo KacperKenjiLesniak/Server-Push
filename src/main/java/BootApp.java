@@ -12,7 +12,8 @@ public class BootApp
                 "/topic",
                 ImmutableList.of(
                         new TriggerEndpointConfiguration("/text", ImmutableList.of("/topic/messages")),
-                        new TriggerEndpointConfiguration("/image", ImmutableList.of("/topic/images")))
+                        new TriggerEndpointConfiguration("/image", ImmutableList.of("/topic/images")),
+                        new TriggerEndpointConfiguration("/matchmade", ImmutableList.of("/topic/matchmade")))
         );
 
         PushServer.run(userConfiguration, args);
