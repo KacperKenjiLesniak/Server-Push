@@ -1,6 +1,8 @@
 package configuration;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -11,34 +13,33 @@ public class UserConfiguration
     private int port;
     private String stompConnectionEndpoint;
     private String brokerDestinationEndpoint;
-    private List<TriggerEndpointConfiguration> triggerEndpointConfigurations;
+    private List<BrokerConfiguration> brokerConfigurations;
 
     private UserConfiguration(final int port,
                               final String stompConnectionEndpoint,
                               final String brokerDestinationEndpoint,
-                              final List<TriggerEndpointConfiguration> triggerEndpointConfigurations)
+                              final List<BrokerConfiguration> brokerConfigurations)
     {
         checkNotNull(port);
         checkNotNull(stompConnectionEndpoint);
         checkNotNull(brokerDestinationEndpoint);
-        checkNotNull(triggerEndpointConfigurations);
+        checkNotNull(brokerConfigurations);
 
         this.port = checkNotNull(port);
         this.stompConnectionEndpoint = checkNotNull(stompConnectionEndpoint);
         this.brokerDestinationEndpoint = checkNotNull(brokerDestinationEndpoint);
-        this.triggerEndpointConfigurations = checkNotNull(triggerEndpointConfigurations);
+        this.brokerConfigurations = checkNotNull(brokerConfigurations);
     }
 
     public static UserConfiguration tryCreatingSingleton(final int port,
                                                          final String stompConnectionEndpoint,
                                                          final String brokerDestinationEndpoint,
-                                                         final List<TriggerEndpointConfiguration> triggerEndpointConfigurations)
+                                                         final List<BrokerConfiguration> brokerConfigurations)
     {
         if (instance == null) {
             instance = new UserConfiguration(port,
                     stompConnectionEndpoint,
-                    brokerDestinationEndpoint,
-                    triggerEndpointConfigurations);
+                    brokerDestinationEndpoint, brokerConfigurations);
             return instance;
         } else {
             throw new UnsupportedOperationException("This object was already created. Obtain it via " +
@@ -71,8 +72,13 @@ public class UserConfiguration
         return brokerDestinationEndpoint;
     }
 
-    public List<TriggerEndpointConfiguration> getTriggerEndpointConfigurations()
+    public Optional<BrokerConfiguration> getBrokerConfigurationFor(String triggerEndpoint)
     {
-        return triggerEndpointConfigurations;
+        List<BrokerConfiguration> brokers =
+                brokerConfigurations.stream()
+                                    .filter(conf -> conf.getTriggerEndpoint().equals(String.format("/%s", triggerEndpoint)))
+                                    .collect(Collectors.toList());
+
+        return Optional.ofNullable(brokers.get(0));
     }
 }
