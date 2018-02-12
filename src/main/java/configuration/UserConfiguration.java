@@ -12,46 +12,38 @@ public class UserConfiguration
 
     private int port;
     private String stompConnectionEndpoint;
-    private String brokerDestinationEndpoint;
     private List<BrokerConfiguration> brokerConfigurations;
 
     private UserConfiguration(final int port,
                               final String stompConnectionEndpoint,
-                              final String brokerDestinationEndpoint,
                               final List<BrokerConfiguration> brokerConfigurations)
     {
-        checkNotNull(port);
-        checkNotNull(stompConnectionEndpoint);
-        checkNotNull(brokerDestinationEndpoint);
-        checkNotNull(brokerConfigurations);
-
-        this.port = checkNotNull(port);
+        this.port = port;
         this.stompConnectionEndpoint = checkNotNull(stompConnectionEndpoint);
-        this.brokerDestinationEndpoint = checkNotNull(brokerDestinationEndpoint);
         this.brokerConfigurations = checkNotNull(brokerConfigurations);
     }
 
     public static UserConfiguration tryCreatingSingleton(final int port,
                                                          final String stompConnectionEndpoint,
-                                                         final String brokerDestinationEndpoint,
                                                          final List<BrokerConfiguration> brokerConfigurations)
     {
         if (instance == null) {
-            instance = new UserConfiguration(port,
+            instance = new UserConfiguration(
+                    port,
                     stompConnectionEndpoint,
-                    brokerDestinationEndpoint, brokerConfigurations);
+                    brokerConfigurations);
             return instance;
         } else {
-            throw new UnsupportedOperationException("This object was already created. Obtain it via " +
-                    "UserConfiguration::getInstance");
+            throw new UnsupportedOperationException(
+                    "This object was already created. Obtain it via UserConfiguration::getInstance");
         }
     }
 
     public static UserConfiguration getInstance()
     {
         if(instance == null) {
-            throw new UnsupportedOperationException("Instance needs to be created first. Use " +
-                    "UserConfiguration::tryCreatingSingleton");
+            throw new UnsupportedOperationException(
+                    "Instance needs to be created first. Use UserConfiguration::tryCreatingSingleton");
         } else {
             return instance;
         }
@@ -65,11 +57,6 @@ public class UserConfiguration
     public String getStompConnectionEndpoint()
     {
         return stompConnectionEndpoint;
-    }
-
-    public String getBrokerDestinationEndpoint()
-    {
-        return brokerDestinationEndpoint;
     }
 
     public Optional<BrokerConfiguration> getBrokerConfigurationFor(String triggerEndpoint)

@@ -29,7 +29,6 @@ public class NotificationSocketConfig extends WebSocketMessageBrokerConfiguratio
     public void configureMessageBroker(MessageBrokerRegistry config)
     {
         config.setApplicationDestinationPrefixes("/app");
-        config.enableSimpleBroker(configuration.getBrokerDestinationEndpoint());
     }
 
     @Override
