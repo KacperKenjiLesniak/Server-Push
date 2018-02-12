@@ -35,10 +35,10 @@
     <h1>Received images:</h1>
     <ul>
         <li ng-repeat="message in ctrl.messages">
-            <b>{{message[0].senderName}}</b> sent <i>{{message[0].sendImageName}}</i> to
-            <b>{{message[0].receiverName}}</b><br/>
-            <b>Image size:</b> {{message[0].sendImageSize}} <br/>
-            <img ng-src="data:image/JPEG;base64,{{message[0].sendImage}}">
+            <b>{{message.senderName}}</b> sent <i>{{message.sendImageName}}</i> to
+            <b>{{message.receiverName}}</b><br/>
+            <b>Image size:</b> {{message.sendImageSize}} <br/>
+            <img ng-src="data:image/JPEG;base64,{{message.sendImage}}">
         </li>
     </ul>
 </div>
@@ -84,7 +84,10 @@
         function handleIncomingMessage(message)
         {
             console.log("Processing incoming message...");
-            vm.messages.push(message.body);
+            var messages = message.body;
+            messages.forEach(function (message, index, array) {
+                vm.messages.push(message);
+            });
         }
 
         // Actually subscribing on page load
