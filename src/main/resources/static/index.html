@@ -4,77 +4,105 @@
 <head>
     <meta charset="utf-8">
     <title>Notification Sender</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <style>
+        .container .form-div {
+            padding: 20px;
+        }
+
+        .container {
+            padding-top: 30px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 500;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="container">
+        <div class="form-div" ng-controller="serverController as ctrl">
+            <button class="btn btn-warning" ng-click="ctrl.closeAllSockets()">Close all sockets</button>
+        </div>
 
-<div ng-controller="serverController as ctrl">
-    <button ng-click="ctrl.closeAllSockets()">Close all sockets</button>
-</div>
+        <div class="form-div">
+            <h1>Messenger notification</h1>
+            <form action="/send/text" method="post">
+                <div>
+                    Messenger sender id ("abc" or "def"):<br>
+                    <input type="text" name="sender-id" id="sender-id"><br>
 
-<h1>Messenger notification</h1>
-<form action="/send/text" method="post">
-    <div>
-        Messenger sender id ("abc" or "def"):<br>
-        <input type="text" name="sender-id" id="sender-id"><br>
+                    Messenger receiver id ("abc" or "def"):<br>
+                    <input type="text" name="receiver-id" id="receiver-id"><br>
 
-        Messenger receiver id ("abc" or "def"):<br>
-        <input type="text" name="receiver-id" id="receiver-id"><br>
+                    Messenger message<br>
+                    <input type="text" name="message" id="message"><br>
 
-        Messenger message<br>
-        <input type="text" name="message" id="message"><br>
+                    <br>
+                    <button class="btn btn-primary" type="submit" name="sa">Submit</button>
+                </div>
+            </form>
+        </div>
 
-        <br>
-        <button type="submit" name="sa">SUBMIT</button>
+        <div class="form-div">
+            <h1>Image notification</h1>
+            <form method="POST" action="/send/image" enctype="multipart/form-data">
+                <div>
+                    Image sender name: <br>
+                    <input type="text" name="image-sender-name" id="image-sender-name"><br>
+
+                    Image receiver name: <br>
+                    <input type="text" name="image-receiver-name" id="image-receiver-name"><br>
+
+                    Select an image to upload: <br>
+                    <input type="file" name="image"/><br><br>
+
+                    <input class="btn btn-primary" type="submit" value="Submit" />
+
+                </div>
+            </form>
+        </div>
+
+        <div class="form-div">
+            <h1>Matchmade enrollment</h1>
+            <form action="/send/matchmade-enrollment" method="POST">
+                Client ID: <br/>
+                <input type="text" name="client-id" id="client-id"/><br/>
+                <br>
+                <input class="btn btn-primary" type="submit" value="Submit" />
+            </form>
+        </div>
+
+        <div class="form-div">
+            <h1>Matchmade match</h1>
+            <form action="/send/matchmade-match" method="POST">
+                Matched clients IDs separated with ';': <br/>
+                <input type="text" name="match" id="match"/><br/>
+                <br>
+                <input class="btn btn-primary" type="submit" value="Submit" />
+            </form>
+        </div>
     </div>
-</form>
 
-<h1>Image notification</h1>
-<form method="POST" action="/send/image" enctype="multipart/form-data">
-    <div>
-        Image sender name: <br>
-        <input type="text" name="image-sender-name" id="image-sender-name"><br>
+    <script src="angular.js"></script>
+    <script src="jquery-3.3.1.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script type="text/javascript">
+        angular
+            .module('pushServerServer', [])
+            .controller('serverController', serverController);
 
-        Image receiver name: <br>
-        <input type="text" name="image-receiver-name" id="image-receiver-name"><br>
+        function serverController($http, $scope)
+        {
+            var vm = this;
 
-        Select an image to upload: <br>
-        <input type="file" name="image"/><br><br>
-
-        <input type="submit" value="SUBMIT" />
-
-    </div>
-</form>
-
-<h1>Matchmade enrollment</h1>
-<form action="/send/matchmade-enrollment" method="POST">
-    Client ID: <br/>
-    <input type="text" name="client-id" id="client-id"/><br/>
-    <input type="submit" value="SUBMIT" />
-</form>
-
-<h1>Matchmade match</h1>
-<form action="/send/matchmade-match" method="POST">
-    Matched clients IDs separated with ';': <br/>
-    <input type="text" name="match" id="match"/><br/>
-    <input type="submit" value="SUBMIT" />
-</form>
-
-<script src="angular.js"></script>
-<script type="text/javascript">
-    angular
-        .module('pushServerServer', [])
-        .controller('serverController', serverController);
-
-    function serverController($http, $scope)
-    {
-        var vm = this;
-
-        vm.closeAllSockets = function () {
-            console.log("Closing all sockets from server...")
-            return $http.get('/closeAll');
-        };
-    }
-</script>
+            vm.closeAllSockets = function () {
+                console.log("Closing all sockets from server...")
+                return $http.get('/closeAll');
+            };
+        }
+    </script>
 </body>
 </html>
