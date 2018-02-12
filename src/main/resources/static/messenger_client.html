@@ -30,9 +30,9 @@
     <h1>Received messages:</h1>
     <ul>
         <li ng-repeat="message in ctrl.messages">
-            <b> From: {{message[0].senderName}} </b><br/>
-            <b> To: {{message[0].receiverName}} </b><br/>
-            {{message[0].message}}
+            <b> From: {{message.senderName}} </b><br/>
+            <b> To: {{message.receiverName}} </b><br/>
+            {{message.message}}
         </li>
     </ul>
 </div>
@@ -78,7 +78,10 @@
         function handleIncomingMessage(message)
         {
             console.log("Processing incoming message...");
-            vm.messages.push(message.body);
+            var messages = message.body;
+            messages.forEach(function (message, index, array) {
+                vm.messages.push(message);
+            });
         }
 
         // Actually subscribing on page load
