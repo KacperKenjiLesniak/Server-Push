@@ -20,6 +20,6 @@ public class BootApp
                         new BrokerConfiguration(new MatchmadeMatchReportFactory()))
         );
 
-        PushServer.run(userConfiguration, args);
+        PushServer.run(args);
     }
 }

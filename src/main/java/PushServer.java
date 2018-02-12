@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 @Import(NotificationSocketConfig.class)
 public class PushServer
 {
-    public static void run(UserConfiguration userConfiguration, String... args)
+    public static void run(String... args)
     {
         final ConfigurableApplicationContext context = SpringApplication.run(new Object[]{PushServer.class}, args);
     }
