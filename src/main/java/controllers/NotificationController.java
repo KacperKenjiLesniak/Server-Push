@@ -2,10 +2,6 @@ package controllers;
 
 import configuration.BrokerConfiguration;
 import configuration.UserConfiguration;
-import matchmade.MatchmadeEnrollmentRequestProcessor;
-import matchmade.MatchmadeMatchReportRequestProcessor;
-import messenger.ImageMessengerRequestProcessor;
-import messenger.MessengerRequestProcessor;
 import notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,14 +37,14 @@ public class NotificationController
     {
         configuration.getBrokerConfigurationFor(triggerEndpoint).ifPresent(brokerConfiguration -> {
             request.setAttribute("trigger", triggerEndpoint);
-            handleRequestWithProcessor(brokerConfiguration, request);
+            doHandleRequest(brokerConfiguration, request);
             response.setStatus(HttpServletResponse.SC_OK);
         });
 
         return "redirect:/index.html";
     }
 
-    private void handleRequestWithProcessor(BrokerConfiguration brokerConfiguration, HttpServletRequest request)
+    private void doHandleRequest(BrokerConfiguration brokerConfiguration, HttpServletRequest request)
     {
         final List<Notification> notificationList = new ArrayList<>();
         RequestProcessor processor = brokerConfiguration.getRequestProcessor();
