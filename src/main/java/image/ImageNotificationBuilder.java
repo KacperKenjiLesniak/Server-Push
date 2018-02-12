@@ -1,4 +1,4 @@
-package messenger;
+package image;
 
 import notification.NotificationBuilder;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 /**
  * Created by annterina on 11.11.17.
  */
-public class ImageMessengerNotificationBuilder implements NotificationBuilder {
+public class ImageNotificationBuilder implements NotificationBuilder {
 
     private String newSenderId;
     private String newReceiverId;
@@ -21,34 +21,34 @@ public class ImageMessengerNotificationBuilder implements NotificationBuilder {
     private long newSendImageSize;
     private String newSendImageName;
 
-    public ImageMessengerNotificationBuilder() {}
+    public ImageNotificationBuilder() {}
 
-    public ImageMessengerNotificationBuilder withSenderId(String newSenderId) {
+    public ImageNotificationBuilder withSenderId(String newSenderId) {
         this.newSenderId = newSenderId;
         return this;
     }
 
-    public ImageMessengerNotificationBuilder withReceiverId(String newReceiverId) {
+    public ImageNotificationBuilder withReceiverId(String newReceiverId) {
         this.newReceiverId = newReceiverId;
         return this;
     }
 
-    public ImageMessengerNotificationBuilder withSenderName(String newSenderName) {
+    public ImageNotificationBuilder withSenderName(String newSenderName) {
         this.newSenderName = newSenderName;
         return this;
     }
 
-    public ImageMessengerNotificationBuilder withReceiverName(String newReceiverName) {
+    public ImageNotificationBuilder withReceiverName(String newReceiverName) {
         this.newReceiverName = newReceiverName;
         return this;
     }
 
-    public ImageMessengerNotificationBuilder withSendDate(LocalDateTime newSendDate) {
+    public ImageNotificationBuilder withSendDate(LocalDateTime newSendDate) {
         this.newSendDate = newSendDate;
         return this;
     }
 
-    public ImageMessengerNotificationBuilder withImage(MultipartFile newSendImage) {
+    public ImageNotificationBuilder withImage(MultipartFile newSendImage) {
         try {
             this.newSendImage = newSendImage.getBytes();
             this.newSendImageSize = newSendImage.getSize();
@@ -60,8 +60,8 @@ public class ImageMessengerNotificationBuilder implements NotificationBuilder {
     }
 
     @Override
-    public ImageMessengerNotification build() {
-        return new ImageMessengerNotification(newSenderId, newReceiverId, newSenderName, newReceiverName, newSendDate, newSendImage, newSendImageSize, newSendImageName);
+    public ImageNotification build() {
+        return new ImageNotification(newSenderId, newReceiverId, newSenderName, newReceiverName, newSendDate, newSendImage, newSendImageSize, newSendImageName);
     }
 
 }

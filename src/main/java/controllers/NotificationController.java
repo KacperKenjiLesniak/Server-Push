@@ -47,7 +47,7 @@ public class NotificationController
     private void doHandleRequest(BrokerConfiguration brokerConfiguration, HttpServletRequest request)
     {
         final List<Notification> notificationList = new ArrayList<>();
-        RequestProcessor processor = brokerConfiguration.getRequestProcessor();
+        RequestProcessor processor = brokerConfiguration.getNotificationFactory().createRequestProcessor();
         notificationList.add(processor.processRequest(request));
         brokerConfiguration.getSendToEndpoints()
                            .forEach(endpoint -> template.convertAndSend(endpoint, notificationList));

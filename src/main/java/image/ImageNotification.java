@@ -1,4 +1,4 @@
-package messenger;
+package image;
 
 import notification.Notification;
 
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 /**
  * Created by annterina on 11.11.17.
  */
-public class ImageMessengerNotification implements Notification {
+public class ImageNotification implements Notification {
 
     private String senderId;
     private String receiverId;
@@ -18,7 +18,7 @@ public class ImageMessengerNotification implements Notification {
     private long sendImageSize;
     private String sendImageName;
 
-    ImageMessengerNotification(String senderId, String receiverId, String senderName, String receiverName, LocalDateTime sendDate, byte[] sendImage, long sendImageSize, String sendImageName) {
+    ImageNotification(String senderId, String receiverId, String senderName, String receiverName, LocalDateTime sendDate, byte[] sendImage, long sendImageSize, String sendImageName) {
 
         this.senderId = senderId;
         this.receiverId = receiverId;

@@ -3,8 +3,9 @@ class GenerateMessengerDatabase extends Script {
     def run() {
         Map<String, String> hmap = new HashMap<>();
         //Adding elements to HashMap
-        hmap.put("abc", "Małgorzata Niezbytdobra");
-        hmap.put("def", "Michał Małastopa");
+        hmap.put("1", "Małgorzata Niezbytdobra");
+        hmap.put("2", "Michał Małastopa");
+        hmap.put("3", "Marcin Kurzeoczko");
         try {
             FileOutputStream fos =
                     new FileOutputStream("src/main/resources/idToName.ser");

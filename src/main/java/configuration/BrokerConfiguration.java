@@ -1,6 +1,7 @@
 package configuration;
 
-import request.RequestProcessor;
+
+import factory.AbstractNotificationFactory;
 
 import java.util.List;
 
@@ -11,15 +12,15 @@ public class BrokerConfiguration
 {
     private final String triggerEndpoint;
     private final List<String> sendToEndpoints;
-    private final RequestProcessor requestProcessor;
+    private final AbstractNotificationFactory notificationFactory;
 
     public BrokerConfiguration(final String triggerEndpoint,
                                final List<String> sendToEndpoints,
-                               final RequestProcessor requestProcessor)
+                               final AbstractNotificationFactory notificationFactory)
     {
         this.sendToEndpoints = checkSendToEndpoints(sendToEndpoints);
         this.triggerEndpoint = checkNotNull(triggerEndpoint);
-        this.requestProcessor = checkNotNull(requestProcessor);
+        this.notificationFactory = checkNotNull(notificationFactory);
     }
 
     private List<String> checkSendToEndpoints(List<String> sendToEndpoints)
@@ -40,8 +41,8 @@ public class BrokerConfiguration
         return sendToEndpoints;
     }
 
-    public RequestProcessor getRequestProcessor()
+    public AbstractNotificationFactory getNotificationFactory()
     {
-        return requestProcessor;
+        return notificationFactory;
     }
 }

@@ -3,7 +3,7 @@ import configuration.UserConfiguration;
 import com.google.common.collect.ImmutableList;
 import matchmade.MatchmadeEnrollmentRequestProcessor;
 import matchmade.MatchmadeMatchReportRequestProcessor;
-import messenger.ImageMessengerRequestProcessor;
+import image.ImageRequestProcessor;
 import messenger.MessengerRequestProcessor;
 
 public class BootApp
@@ -20,7 +20,7 @@ public class BootApp
                                                 new MessengerRequestProcessor()),
                         new BrokerConfiguration("/image",
                                                 ImmutableList.of("/topic/images"),
-                                                new ImageMessengerRequestProcessor()),
+                                                new ImageRequestProcessor()),
                         new BrokerConfiguration("/matchmade-enrollment",
                                                 ImmutableList.of("/topic/matchmade"),
                                                 new MatchmadeEnrollmentRequestProcessor()),

@@ -1,4 +1,4 @@
-package messenger;
+package image;
 
 import notification.Notification;
 import request.RequestProcessor;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by annterina on 11.11.17.
  */
-public class ImageMessengerRequestProcessor extends RequestProcessor {
+public class ImageRequestProcessor extends RequestProcessor {
 
     private MultipartFile image;
 
@@ -32,7 +32,7 @@ public class ImageMessengerRequestProcessor extends RequestProcessor {
     @Override
     protected Notification constructNotification(HttpServletRequest request) {
 
-        return new ImageMessengerNotificationBuilder()
+        return new ImageNotificationBuilder()
                 .withSenderName(request.getParameter("image-sender-name"))
                 .withReceiverName(request.getParameter("image-receiver-name"))
                 .withImage(image)
