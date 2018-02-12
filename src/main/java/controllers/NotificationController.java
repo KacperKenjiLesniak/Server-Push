@@ -45,7 +45,7 @@ public class NotificationController
     private void doHandleRequest(BrokerConfiguration brokerConfiguration, HttpServletRequest request)
     {
         final List<Notification> notificationList = new ArrayList<>();
-        RequestProcessor processor = brokerConfiguration.getNotificationFactory().createRequestProcessor();
+        RequestProcessor processor = brokerConfiguration.getServerPushFactory().createRequestProcessor();
         notificationList.add(processor.processRequest(request));
         HistoryService historyService = brokerConfiguration.getHistoryService();
         notificationList.forEach(historyService::addToHistory);

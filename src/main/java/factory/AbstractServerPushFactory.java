@@ -11,7 +11,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by annterina on 12.02.18.
  */
-public abstract class AbstractNotificationFactory {
+public abstract class AbstractServerPushFactory
+{
 
     public abstract RequestProcessor createRequestProcessor();
     public abstract HistoryService createHistoryService();

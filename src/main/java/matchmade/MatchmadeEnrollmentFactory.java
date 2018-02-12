@@ -1,7 +1,7 @@
 package matchmade;
 
 import com.google.common.collect.ImmutableList;
-import factory.AbstractNotificationFactory;
+import factory.AbstractServerPushFactory;
 import history.HistoryService;
 import request.RequestProcessor;
 
@@ -10,7 +10,8 @@ import java.util.List;
 /**
  * Created by annterina on 12.02.18.
  */
-public class MatchmadeEnrollmentFactory extends AbstractNotificationFactory {
+public class MatchmadeEnrollmentFactory extends AbstractServerPushFactory
+{
 
     @Override
     public RequestProcessor createRequestProcessor() {

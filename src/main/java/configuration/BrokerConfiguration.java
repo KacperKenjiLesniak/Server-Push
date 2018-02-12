@@ -1,7 +1,7 @@
 package configuration;
 
 
-import factory.AbstractNotificationFactory;
+import factory.AbstractServerPushFactory;
 import history.HistoryService;
 
 import java.util.List;
@@ -11,18 +11,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class BrokerConfiguration
 {
-
-    private final AbstractNotificationFactory notificationFactory;
+    private final AbstractServerPushFactory serverPushFactory;
     private final String triggerEndpoint;
     private final List<String> sendToEndpoints;
     private HistoryService historyService;
 
-    public BrokerConfiguration(final AbstractNotificationFactory notificationFactory)
+    public BrokerConfiguration(final AbstractServerPushFactory serverPushFactory)
     {
-        this.notificationFactory = checkNotNull(notificationFactory);
-        this.sendToEndpoints = notificationFactory.createSendToEndpoints();
-        this.triggerEndpoint = notificationFactory.createTriggerEndpoint();
-        this.historyService = notificationFactory.createHistoryService();
+        this.serverPushFactory = checkNotNull(serverPushFactory);
+        this.sendToEndpoints = serverPushFactory.createSendToEndpoints();
+        this.triggerEndpoint = serverPushFactory.createTriggerEndpoint();
+        this.historyService = serverPushFactory.createHistoryService();
     }
 
     public String getTriggerEndpoint()
@@ -35,9 +34,9 @@ public class BrokerConfiguration
         return sendToEndpoints;
     }
 
-    public AbstractNotificationFactory getNotificationFactory()
+    public AbstractServerPushFactory getServerPushFactory()
     {
-        return notificationFactory;
+        return serverPushFactory;
     }
 
     public HistoryService getHistoryService() {
