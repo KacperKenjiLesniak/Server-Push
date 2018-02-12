@@ -35,6 +35,7 @@
             {{message.message}}
         </li>
     </ul>
+    <button ng-click="showHistory()">Show History </button>
 </div>
 
 <script src="sockjs-0.3.4.js"></script>
@@ -57,7 +58,7 @@
             .reconnectAfter(10); // long time for testing purposes
     }
 
-    function pushServerController(ngstomp, $scope)
+    function pushServerController(ngstomp, $scope, $http)
     {
         var vm = this; // view's model
 
@@ -84,6 +85,15 @@
             });
         }
 
+        $scope.showHistory = function()
+        {
+            console.log("Requesting history...");
+            vm.messages = [];
+            $http({
+                method : "GET",
+                url: "http://localhost:8080/history/text",
+                headers: {"Access-Control-Allow-Origin" :  "*"}});
+        };
         // Actually subscribing on page load
         subscribe();
     }

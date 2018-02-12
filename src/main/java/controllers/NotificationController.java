@@ -2,15 +2,13 @@ package controllers;
 
 import configuration.BrokerConfiguration;
 import configuration.UserConfiguration;
+import history.HistoryService;
 import notification.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import request.RequestProcessor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +47,8 @@ public class NotificationController
         final List<Notification> notificationList = new ArrayList<>();
         RequestProcessor processor = brokerConfiguration.getNotificationFactory().createRequestProcessor();
         notificationList.add(processor.processRequest(request));
+        HistoryService historyService = brokerConfiguration.getHistoryService();
+        notificationList.forEach(historyService::addToHistory);
         brokerConfiguration.getSendToEndpoints()
                            .forEach(endpoint -> template.convertAndSend(endpoint, notificationList));
 
@@ -65,5 +65,15 @@ public class NotificationController
     public String showHome()
     {
         return "index.html";
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/history/{triggerEndpoint}", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void showHistory(@PathVariable String triggerEndpoint) {
+        configuration.getBrokerConfigurationFor(triggerEndpoint).ifPresent(brokerConfiguration -> {
+            brokerConfiguration.getSendToEndpoints()
+                    .forEach(endpoint -> template.convertAndSend(endpoint, brokerConfiguration.getHistoryService().getHistory()));
+        });
     }
 }
